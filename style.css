@@ -1,0 +1,77 @@
+.grid {
+    /* no.grids = 28
+    width of the squre = 20px
+    so, width and height = 28 * 20px = 560px */
+    width: 560px;
+    height: 560px;
+    /*border: solid;
+    border-color: black;*/
+    border: solid black;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid div {
+    width: 20px;
+    height: 20px;
+}
+
+
+ /*keys
+    0 - pac-dots
+    1 - wall
+    2 - ghost
+    3 - power-pellet
+    4 - empty
+    */
+
+
+.pac-dot {
+    background-color: green;
+    border: 5px white solid;
+    box-sizing: border-box;
+}
+
+.wall {
+    background-color: black;
+}
+
+.ghost {
+    background-color: rgb(0, 255, 255);
+    border: 5px white solid;
+    box-sizing: border-box;
+}
+
+.power-pellet {
+    background-color: yellowgreen;
+    border-radius: 10px;
+}
+
+.empty {
+    background-color: white;
+}
+
+.blinky {
+    background-color: red;
+}
+
+.pinky {
+    background-color: palevioletred;
+}
+
+.inky {
+    background-color: blanchedalmond;
+}
+
+.clyd {
+    background-color: orange;
+}
+
+.pack-man {
+    background-color: rgb(61, 61, 0);
+    border-radius: 10px;
+}
+
+.sacared-ghost {
+    background-color: aquamarine;
+}

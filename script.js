@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createBoard() {
         for (let index = 0; index < gridLayout.length; index++) {
             const square = document.createElement('div');
+            square.id = index;
             gird.appendChild(square);
 
             squares.push(square);
@@ -69,14 +70,49 @@ document.addEventListener('DOMContentLoaded', () => {
     squares[pacmanCurrentIndex].classList.add('pack-man');
 
     document.addEventListener('keyup', e => {
+        squares[pacmanCurrentIndex].classList.remove('pack-man');
         switch (e.key) {
-            case 'ArrowUp':
+            case 'ArrowLeft':
+                if (
+                    pacmanCurrentIndex % 28 !== 0 &&
+                    !squares[pacmanCurrentIndex - 1].classList.contains('wall')
                 
+                ){
+                    pacmanCurrentIndex -= 1;
+                    if (pacmanCurrentIndex === 364) pacmanCurrentIndex = 391;
+                }
                 break;
-        
+            case 'ArrowRight':
+                if (
+                    pacmanCurrentIndex % 28 !== 27 && 
+                    !squares[pacmanCurrentIndex + 1].classList.contains('wall')
+                ){
+                    pacmanCurrentIndex += 1;
+                    if (pacmanCurrentIndex === 391) pacmanCurrentIndex = 364;
+                }
+                break;
+            case 'ArrowUp':
+                if (
+                    !squares[pacmanCurrentIndex - 28].classList.contains('wall')
+                ) {
+                    pacmanCurrentIndex -= 28;
+                }
+                break;
+            case 'ArrowDown':
+                if (
+                    !squares[pacmanCurrentIndex + 28].classList.contains('wall')
+                ) {
+                    pacmanCurrentIndex += 28;
+                }
+                break;
             default:
                 break;
         }
+        squares[pacmanCurrentIndex].classList.add('pack-man');
+        pacDotEaten();
+        //powerPalletEaten();
+        //checkForGameOver();
+        //checkForWin();
     })
 
     /*
@@ -85,6 +121,5 @@ document.addEventListener('DOMContentLoaded', () => {
     ArrowRight
     ArrowLeft
     */
-
 
 })

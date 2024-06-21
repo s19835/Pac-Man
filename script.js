@@ -59,9 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
             squares.push(square);
             if (gridLayout[index] === 0) squares[index].classList.add('pac-dot');
             if (gridLayout[index] === 1) squares[index].classList.add('wall');
-            if (gridLayout[index] === 2) squares[index].classList.add('ghost');
+            //if (gridLayout[index] === 2) squares[index].classList.add('ghost');
             if (gridLayout[index] === 3) squares[index].classList.add('power-pellet');
-            if (gridLayout[index] === 4) squares[index].classList.add('empty');
+            //if (gridLayout[index] === 4) squares[index].classList.add('empty');
         }
     }
 
@@ -75,8 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'ArrowLeft':
                 if (
                     pacmanCurrentIndex % 28 !== 0 &&
-                    !squares[pacmanCurrentIndex - 1].classList.contains('wall')
-                
+                    !squares[pacmanCurrentIndex - 1].classList.contains('wall') &&
+                    !squares[pacmanCurrentIndex - 1].classList.contains('ghost')
                 ){
                     pacmanCurrentIndex -= 1;
                     if (pacmanCurrentIndex === 364) pacmanCurrentIndex = 391;
@@ -85,7 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'ArrowRight':
                 if (
                     pacmanCurrentIndex % 28 !== 27 && 
-                    !squares[pacmanCurrentIndex + 1].classList.contains('wall')
+                    !squares[pacmanCurrentIndex + 1].classList.contains('wall') &&
+                    !squares[pacmanCurrentIndex + 1].classList.contains('ghost')
                 ){
                     pacmanCurrentIndex += 1;
                     if (pacmanCurrentIndex === 391) pacmanCurrentIndex = 364;
@@ -93,14 +94,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 'ArrowUp':
                 if (
-                    !squares[pacmanCurrentIndex - 28].classList.contains('wall')
+                    !squares[pacmanCurrentIndex - 28].classList.contains('wall') &&
+                    !squares[pacmanCurrentIndex - 28].classList.contains('ghost')
                 ) {
                     pacmanCurrentIndex -= 28;
                 }
                 break;
             case 'ArrowDown':
                 if (
-                    !squares[pacmanCurrentIndex + 28].classList.contains('wall')
+                    !squares[pacmanCurrentIndex + 28].classList.contains('wall') &&
+                    !squares[pacmanCurrentIndex + 28].classList.contains('ghost')
                 ) {
                     pacmanCurrentIndex += 28;
                 }
@@ -110,8 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         squares[pacmanCurrentIndex].classList.add('pack-man');
         pacDotEaten();
-        //powerPalletEaten();
-        //checkForGameOver();
+        powerPalletEaten();
+        checkForGameOver();
         //checkForWin();
     })
 
@@ -127,8 +130,57 @@ document.addEventListener('DOMContentLoaded', () => {
          squares[pacmanCurrentIndex].classList.replace('pac-dot', 'pack-man');
          score++;
          // console.log(score);
+         scoreDisplay.innerHTML = score;
         }
-     }
- 
+    }
+     
+    function checkForGameOver() {
+        if(squares[pacmanCurrentIndex].classList.contains('ghost')) {
+            pacmanCurrentIndex = 490;
+            alert(`Game Over!\n score: ${score}`);
+        }
+    }
+
+    function powerPalletEaten() {
+        if(squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
+            squares[pacmanCurrentIndex].classList.replace('power-pellet', 'pack-man');
+            score += 10;
+            scoreDisplay.innerHTML = score;
+        }
+    }
+
+
+    class Ghost {
+        constructor(className, startIndex, speed) {
+            this.className = className;
+            this.startIndex = startIndex;
+            this.speed = speed;
+            this.currentIndex = startIndex;
+            this.isScared = false;
+            this.timerId = NaN;
+        }
+    }
+
+    let ghosts = [
+        new Ghost('blinky', 379, 250),
+        new Ghost('pinky', 405, 400),
+        new Ghost('inky', 376, 350),
+        new Ghost('clyd', 408, 500)
+    ];
+
+    // ghosts.forEach(ghost => {
+    //     squares[ghost.currentIndex].classList.add(ghost.className);
+    //     squares[ghost.currentIndex].classList.add('ghost');
+
+    //     const directions = [1, -1, 28, -28];
+    //     const direction = directions[Math.floor(Math.random * directions.length)];
+
+    //     ghost.timerId = setInterval(() => {
+    //         squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost');
+    //         ghost.currentIndex += direction;
+    //         squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+    //     }, ghost.speed);
+    // })
+    
 
 })

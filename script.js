@@ -122,4 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ArrowLeft
     */
 
+    function pacDotEaten() {
+        if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
+         squares[pacmanCurrentIndex].classList.replace('pac-dot', 'pack-man');
+         score++;
+         // console.log(score);
+        }
+     }
+ 
+
 })

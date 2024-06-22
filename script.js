@@ -168,19 +168,26 @@ document.addEventListener('DOMContentLoaded', () => {
         new Ghost('clyd', 408, 500)
     ];
 
-    // ghosts.forEach(ghost => {
-    //     squares[ghost.currentIndex].classList.add(ghost.className);
-    //     squares[ghost.currentIndex].classList.add('ghost');
+    ghosts.forEach(ghost => {
+        squares[ghost.currentIndex].classList.add(ghost.className);
+        squares[ghost.currentIndex].classList.add('ghost');
 
-    //     const directions = [1, -1, 28, -28];
-    //     const direction = directions[Math.floor(Math.random * directions.length)];
+        const directions = [1, -1, 28, -28];
+        let direction = directions[Math.floor(Math.random() * directions.length)];
 
-    //     ghost.timerId = setInterval(() => {
-    //         squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost');
-    //         ghost.currentIndex += direction;
-    //         squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
-    //     }, ghost.speed);
-    // })
+        ghost.timerId = setInterval(() => {
+            if (
+                !squares[ghost.currentIndex + direction].classList.contains('ghost') &&
+                !squares[ghost.currentIndex + direction].classList.contains('wall')
+            ) {
+                squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost');
+                ghost.currentIndex += direction;
+                squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+            } else {
+                direction = directions[Math.floor(Math.random() * directions.length)];
+            }
+        }, ghost.speed);
+    })
     
-
+    
 })

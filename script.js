@@ -154,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
          squares[pacmanCurrentIndex].classList.replace('pac-dot', 'pack-man');
          score++;
-         // console.log(score);
          scoreDisplay.innerHTML = score;
         }
     }
@@ -204,9 +203,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!ghost.isScared && squares[pacmanCurrentIndex].classList.contains(ghost.className)) {
                 ghost.currentIndex = ghost.startIndex;
                 ghosts.forEach(ghost => clearInterval(ghost.timerId));
-                // document.removeEventListener('keyup', movePacman);
                 setTimeout(() => alert('Game Over'), 500);
             }
         }, ghost.speed);
     })
 })
+
+
+// for version 2: 
+// web styling need to done
+// styling when Game over, win alert, modify those conditions
+// apply AI for ghost move-ments now it's just random

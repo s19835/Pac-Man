@@ -114,8 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
         squares[pacmanCurrentIndex].classList.add('pack-man');
         pacDotEaten();
         powerPalletEaten();
-        checkForGameOver();
-        //checkForWin();
+        checkForWin();
     })
 
     /*
@@ -124,31 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
     ArrowRight
     ArrowLeft
     */
-
-    function pacDotEaten() {
-        if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
-         squares[pacmanCurrentIndex].classList.replace('pac-dot', 'pack-man');
-         score++;
-         // console.log(score);
-         scoreDisplay.innerHTML = score;
-        }
+   let count;
+   function checkForWin() {
+    if (score == 274) {
+        setTimeout(() => {
+            alert('You Win');
+        }, 500);
     }
-     
-    function checkForGameOver() {
-        if(squares[pacmanCurrentIndex].classList.contains('ghost')) {
-            pacmanCurrentIndex = 490;
-            alert(`Game Over!\n score: ${score}`);
-        }
-    }
-
-    function powerPalletEaten() {
-        if(squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
-            squares[pacmanCurrentIndex].classList.replace('power-pellet', 'pack-man');
-            score += 10;
-            scoreDisplay.innerHTML = score;
-        }
-    }
-
+   }
 
     class Ghost {
         constructor(className, startIndex, speed) {
@@ -168,6 +150,34 @@ document.addEventListener('DOMContentLoaded', () => {
         new Ghost('clyd', 408, 500)
     ];
 
+    function pacDotEaten() {
+        if (squares[pacmanCurrentIndex].classList.contains('pac-dot')) {
+         squares[pacmanCurrentIndex].classList.replace('pac-dot', 'pack-man');
+         score++;
+         // console.log(score);
+         scoreDisplay.innerHTML = score;
+        }
+    }
+
+    function powerPalletEaten() {
+        if(squares[pacmanCurrentIndex].classList.contains('power-pellet')) {
+            squares[pacmanCurrentIndex].classList.replace('power-pellet', 'pack-man');
+            score += 10;
+            scoreDisplay.innerHTML = score;
+            ghosts.forEach(ghost => {
+                ghost.isScared = true;
+            });
+            setTimeout(unScardGhost, 10000);
+        }
+    }
+
+    function unScardGhost() {
+        ghosts.forEach(ghost => {
+            ghost.isScared = false;
+            squares[ghost.currentIndex].classList.add(ghost.className);
+        });
+    }
+
     ghosts.forEach(ghost => {
         squares[ghost.currentIndex].classList.add(ghost.className);
         squares[ghost.currentIndex].classList.add('ghost');
@@ -180,14 +190,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 !squares[ghost.currentIndex + direction].classList.contains('ghost') &&
                 !squares[ghost.currentIndex + direction].classList.contains('wall')
             ) {
-                squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost');
+                squares[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'sacared-ghost');
                 ghost.currentIndex += direction;
                 squares[ghost.currentIndex].classList.add(ghost.className, 'ghost');
             } else {
                 direction = directions[Math.floor(Math.random() * directions.length)];
             }
+            if (ghost.isScared) {
+                squares[ghost.currentIndex].classList.remove(ghost.className);
+                squares[ghost.currentIndex].classList.add('scared-ghost');
+            }
+
+            if (!ghost.isScared && squares[pacmanCurrentIndex].classList.contains(ghost.className)) {
+                ghost.currentIndex = ghost.startIndex;
+                ghosts.forEach(ghost => clearInterval(ghost.timerId));
+                // document.removeEventListener('keyup', movePacman);
+                setTimeout(() => alert('Game Over'), 500);
+            }
         }, ghost.speed);
     })
-    
-    
 })
